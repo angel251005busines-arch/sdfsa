@@ -22,6 +22,16 @@ cd sdfsa
 
 **Windows:** двойной клик по `start.bat` (или в командной строке: `start.bat`).
 
+Если `start.bat` выдаёт странные ошибки вида `'а' is not recognized as an internal
+or external command` — запустите ту же команду вручную (это всегда работает):
+
+```bat
+cd C:\путь\к\sdfsa
+py -3 -m boolgen.cli serve
+```
+
+Если `py` не найден, используйте `python -m boolgen.cli serve` или `python3 -m boolgen.cli serve`.
+
 Если скрипт не запускается — та же команда вручную:
 
 ```bash
@@ -47,6 +57,7 @@ python3 -m boolgen.cli serve
 | Доступ с других машин (сервер) | `HOST=0.0.0.0 ./start.sh`, затем открывать `http://<ip-сервера>:8000` |
 | «Трудная» сложность не генерируется | в форме поставьте глубину 4 или 5 |
 | Порт занят | `PORT=8001 ./start.sh` |
+| Windows: `'а' is not recognized...` в `start.bat` | старая версия файла с русским текстом; обновите проект (`git pull`) или запустите `py -3 -m boolgen.cli serve` вручную |
 | Проверить, что всё работает | `python3 -m boolgen.cli selftest` |
 | Посмотреть примеры заданий в консоли | `python3 -m boolgen.cli demo --count 1` |
 | Прогнать тесты | `python3 -m unittest discover -s tests -t .` |

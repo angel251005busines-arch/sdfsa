@@ -49,8 +49,9 @@ python3 -m boolgen.cli demo --count 2           # примеры всех тип
 python3 -m boolgen.cli gen --type columns --vars 3 --depth 3 --count 3
 python3 -m boolgen.cli gen --type simplify --ops NOT,AND,OR --json > tasks.json
 python3 -m boolgen.cli verify tasks.json        # проверить внешние задания (например, от LLM)
+python3 -m boolgen.cli pool --pool pool.sqlite  # состояние пула и доля брака
 python3 -m boolgen.cli serve --port 8000        # HTTP API + демо-страница
-python3 -m unittest discover -s tests -t .      # 95 тестов
+python3 -m unittest discover -s tests -t .      # 96 тестов
 ```
 
 ## Архитектура

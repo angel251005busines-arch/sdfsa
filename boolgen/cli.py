@@ -71,7 +71,19 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _configure_console() -> None:
+    """Windows: перевести вывод в UTF-8, иначе русский текст ломается в консоли."""
+    if sys.platform != "win32":
+        return
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+        except Exception:
+            pass
+
+
 def main(argv=None) -> int:
+    _configure_console()
     args = build_parser().parse_args(argv)
     try:
         return args.func(args)
