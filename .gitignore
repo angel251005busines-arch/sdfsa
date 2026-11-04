@@ -1,0 +1,21 @@
+# Служебное
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.cline-home/
+
+# Данные пула и логи
+*.sqlite
+*.sqlite-journal
+*.db
+*.log
+
+# Артефакты проверок
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/

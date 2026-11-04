@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Генератор заданий — алгебра логики</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; line-height: 1.5; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .sub { opacity: .7; margin-top: 0; font-size: .9rem; }
+  form { border: 1px solid #8884; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; align-items: flex-end; }
+  label { display: flex; flex-direction: column; font-size: .85rem; gap: 4px; }
+  fieldset { border: 1px solid #8884; border-radius: 10px; display: flex; gap: 12px; flex-wrap: wrap; }
+  fieldset label { flex-direction: row; align-items: center; gap: 6px; font-size: .9rem; }
+  select, input[type=number], input[type=text] { padding: 6px 8px; border-radius: 8px;
+         border: 1px solid #8886; background: transparent; color: inherit; font-size: .95rem; }
+  button { padding: 8px 16px; border-radius: 10px; border: 1px solid #8888; cursor: pointer;
+           font-size: .95rem; background: #4c7dff; color: #fff; }
+  button.ghost { background: transparent; color: inherit; }
+  .card { border: 1px solid #8884; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .prompt { margin: 0 0 8px; white-space: pre-wrap; }
+  table { border-collapse: collapse; margin: 8px 0; font-family: ui-monospace, monospace; }
+  th, td { border: 1px solid #8886; padding: 4px 10px; text-align: center; }
+  .meta { font-size: .8rem; opacity: .65; }
+  .verdict { font-weight: 600; margin-left: 8px; }
+  .ok { color: #1a9e57; } .bad { color: #d93b3b; }
+  .error { border-color: #d93b3b; color: #d93b3b; }
+</style>
+</head>
+<body>
+<h1>Генератор заданий: алгебра логики</h1>
+<p class="sub">Все задания построены процедурно и проверены ядром: два независимых
+вычислителя истинности, соответствие параметрам, однозначность ответа, дедупликация.</p>
+
+<form id="form">
+  <div class="row">
+    <label>Тип задания
+      <select name="task_type">
+        <option value="truth_table">Таблица истинности</option>
+        <option value="evaluate">Значение на наборе</option>
+        <option value="count_ones">Сколько наборов дают 1</option>
+        <option value="columns" selected>Столбцы таблицы (ЕГЭ №2)</option>
+        <option value="simplify">МДНФ</option>
+      </select>
+    </label>
+    <label>Переменных
+      <select name="variables">
+        <option>2</option><option selected>3</option><option>4</option><option>5</option>
+      </select>
+    </label>
+    <label>Глубина
+      <select name="depth">
+        <option>1</option><option>2</option><option selected>3</option>
+        <option>4</option><option>5</option>
+      </select>
+    </label>
+    <label>Сложность
+      <select name="difficulty">
+        <option value="easy">лёгкая</option>
+        <option value="medium" selected>средняя</option>
+        <option value="hard">трудная</option>
+        <option value="any">любая</option>
+      </select>
+    </label>
+    <label>Количество
+      <input type="number" name="count" value="3" min="1" max="20">
+    </label>
+  </div>
+  <fieldset>
+    <legend>Операции</legend>
+    <label><input type="checkbox" value="NOT" checked> НЕ (¬)</label>
+    <label><input type="checkbox" value="AND" checked> И (∧)</label>
+    <label><input type="checkbox" value="OR" checked> ИЛИ (∨)</label>
+    <label><input type="checkbox" value="XOR"> искл. ИЛИ (⊕)</label>
+    <label><input type="checkbox" value="IMPL"> импликация (→)</label>
+    <label><input type="checkbox" value="EQV"> эквивалентность (≡)</label>
+  </fieldset>
+  <div class="row" style="margin-top:12px">
+    <button type="submit">Сгенерировать</button>
+    <span class="meta">«Трудная» сложность требует глубины 4–5.</span>
+  </div>
+</form>
+
+<div id="status"></div>
+<div id="tasks"></div>
+<script src="/app.js"></script>
+</body>
+</html>

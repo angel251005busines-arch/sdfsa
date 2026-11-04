@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boolgen"
+version = "0.1.0"
+description = "Генератор школьных заданий по алгебре логики (ЕГЭ) с ядром-верификатором"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []          # намеренно: ядро на чистой стандартной библиотеке
+
+[project.optional-dependencies]
+dev = []                   # тесты работают на stdlib unittest
+
+[project.scripts]
+boolgen = "boolgen.cli:main"
+
+[tool.setuptools]
+packages = ["boolgen", "boolgen.tasks"]
+
+[tool.setuptools.package-data]
+boolgen = ["web/*.html", "web/*.js"]
