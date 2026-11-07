@@ -13,6 +13,9 @@ chcp 65001 >nul 2>&1
 
 if not defined PORT set "PORT=8000"
 
+set "AUTH="
+if "%1"=="--auth" set "AUTH=--auth"
+
 rem --- find Python: py launcher first, then python, then python3 -------------
 set "PY="
 
@@ -34,7 +37,7 @@ echo.
 echo   boolgen: http://127.0.0.1:%PORT%
 echo   Press Ctrl+C to stop.
 echo.
-%PY% -m boolgen.cli serve --host 127.0.0.1 --port %PORT% --pool boolgen_pool.sqlite
+%PY% -m boolgen.cli serve --host 127.0.0.1 --port %PORT% --pool boolgen_pool.sqlite %AUTH%
 echo.
 echo   Server stopped.
 pause

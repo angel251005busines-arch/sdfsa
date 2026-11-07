@@ -134,27 +134,43 @@ def serve(
     port: int = 8000,
     pool_path: str = "boolgen_pool.sqlite",
     open_browser: bool = True,
+    auth: bool = False,
 ) -> None:
     """Запустить HTTP-сервер (блокирующий вызов).
 
-    ``open_browser`` открывает страницу в браузере, если он есть (на сервере
-    без графики просто ничего не произойдёт).
+    ``auth=True`` включает аутентификацию: /login, /logout, /me, /me/stats,
+    персональные пулы заданий и статистика по пользователям.
     """
-    service = TaskService(pool_path=pool_path)
-    server = ThreadingHTTPServer((host, port), create_handler(service))
+    from .auth.service_wrapper import UserTaskService
+    from .auth.web_auth import AuthHandler
+
+    if auth:
+        service = UserTaskService()
+        base_handler = create_handler(TaskService(pool_path=pool_path))
+
+        def handler_factory(*a, **k):
+            return AuthHandler(*a, service=service, fallback=base_handler, **k)
+
+        handler_class = handler_factory
+    else:
+        service = TaskService(pool_path=pool_path)
+        handler_class = create_handler(service)
+
+    server = ThreadingHTTPServer((host, port), handler_class)
     url = f"http://{host}:{port}"
     print("=" * 52)
     print(f"  Генератор заданий запущен: {url}")
     print(f"  Пул заданий: {pool_path}")
+    if auth:
+        print(f"  Аутентификация: включена (/login, /me, /me/stats)")
     print("  Остановить: Ctrl+C")
     print("=" * 52)
     sys.stdout.flush()
     if open_browser:
         try:
             import webbrowser
-
             webbrowser.open(url)
-        except Exception:  # на сервере без браузера это нормально
+        except Exception:
             pass
     try:
         server.serve_forever()
@@ -162,4 +178,10 @@ def serve(
         print("\nостановлено пользователем")
     finally:
         server.server_close()
-        service.pool.close()
+        try:
+            if auth:
+                service.close()
+            else:
+                service.pool.close()
+        except AttributeError:
+            pass

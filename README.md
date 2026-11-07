@@ -52,7 +52,27 @@ python3 -m boolgen.cli verify tasks.json        # проверить внешн�
 python3 -m boolgen.cli pool --pool pool.sqlite  # состояние пула и доля брака
 python3 -m boolgen.cli serve --port 8000        # HTTP API + демо-страница
 python3 -m unittest discover -s tests -t .      # 96 тестов
+python3 -m boolgen.cli serve --auth --port 8000  # с аутентификацией
 ```
+
+## Аутентификация и персональная статистика
+
+С флагом `--auth` разные пользователи могут пользоваться генератором на одном ПК:
+
+```bash
+./start.sh --auth
+# или
+python3 -m boolgen.cli serve --auth --port 8000
+```
+
+В браузере (<http://127.0.0.1:8000>):
+
+* **Регистрация / вход** — логин (мин. 3 символа) + пароль (мин. 4), сессия в cookie.
+* **Личный пул** — у каждого пользователя своя база `data/users/<логин>/pool.sqlite`, он не видит задания и статистику других.
+* **Проверка ответов** — каждый ответ записывается в личную статистику.
+* **Статистика** — `GET /me/stats` возвращает число решений, верных ответов, разбивку по типам и сложности.
+
+Основной код `boolgen/` не менялся: аутентификация и статистика реализованы в новых файлах `boolgen/auth/` (`users.py`, `sessions.py`, `user_pool.py`, `service_wrapper.py`, `web_auth.py`).
 
 ## Архитектура
 

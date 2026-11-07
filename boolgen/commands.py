@@ -180,5 +180,6 @@ def cmd_serve(args: argparse.Namespace) -> int:
         port=args.port,
         pool_path=args.pool,
         open_browser=not args.no_open,
+        auth=args.auth,
     )
     return 0

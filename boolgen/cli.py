@@ -66,6 +66,8 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--pool", default="boolgen_pool.sqlite")
     serve.add_argument("--no-open", dest="no_open", action="store_true",
                        help="не открывать браузер автоматически")
+    serve.add_argument("--auth", action="store_true",
+                       help="включить аутентификацию и персональную статистику")
     serve.set_defaults(func=commands.cmd_serve)
 
     return parser
